@@ -154,19 +154,19 @@ GET /api/messages/inbox → User inbox
 ## 📸 Screenshots
 
 ### Login Page
-![Login Screenshot](./assets/login.png)
+![Login Screenshot](./screenshots/login.png)
 
 ### Dashboard
-![Dashboard Screenshot](./assets/dashbooard.png)
+![Dashboard Screenshot](./screenshots/dashbooard.png)
 
 ### Dashboard
-![Items List Screenshot](./assets/itemsList.png)
+![Items List Screenshot](./screenshots/itemsList.png)
 
 ### Dashboard
-![All Post Screenshot](./assets/allPost.png)
+![All Post Screenshot](./screenshots/allPost.png)
 
 ### Dashboard
-![Cultural Post Screenshot](./assets/culturalPosts.png)
+![Cultural Post Screenshot](./screenshots/culturalPosts.png)
 
 
 📜 License
