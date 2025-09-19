@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <h1>Fashion Swap</h1>
+    <div class="nav-right">
+      <span id="userInfo">Welcome</span>
+      <button onclick="logout()">Logout</button>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <ul>
+        <li><a href="dashboard.html">Dashboard</a></li>
+        <li><a href="items.html">My Items</a></li>
+        <li><a href="posts.html">Cultural Posts</a></li>
+        <li><a href="swaps.html">Swap Requests</a></li>
+        <li><a href="messages.html">Messages</a></li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h2>Items</h2>
+      <button id="loadItems">Load Items</button>
+      <div id="items"></div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

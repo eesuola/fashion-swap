@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Items</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="js/main.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+  <a href="index.html">Home</a>
+  <!-- <a href="signup.html">Sign Up</a>
+  <a href="login.html">Login</a> -->
+  <a href="posts.html">Cultural Posts</a>
+  <a href="items.html">Items</a>
+  <a href="swaps.html">Swaps</a>
+  <a href="messages.html">Messages</a>
+  <a href="dashboard.html">Dashboard</a>
+</nav>
+
+  <h2>My Items</h2>
+  
+  <form id="itemForm" enctype="multipart/form-data">
+    <input type="text" name="title" placeholder="Item Title" required><br>
+    <textarea name="description" placeholder="Description"></textarea><br>
+    <input type="text" name="category" placeholder="Category"><br>
+    <input type="text" name="status" placeholder="Status"><br>
+    <select name="type">
+      <option value="swap">Swap</option>
+      <option value="donate">Donate</option>
+      <option value="sell">Sell</option>
+    </select><br>
+    <input type="file" name="photos" multiple><br>
+    <button type="submit">Add Item</button>
+  </form>
+
+  <h3>My Items</h3>
+  <button id="loadItems">Load Items</button>
+  <div id="items"></div>
+
+</body>
+</html>

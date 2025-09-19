@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Swap Requests</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="js/main.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="posts.html">Cultural Posts</a>
+  <a href="items.html">Items</a>
+  <a href="swaps.html">Swaps</a>
+  <a href="messages.html">Messages</a>
+  <a href="dashboard.html">Dashboard</a>
+</nav>
+
+  <h2>Swap Requests</h2>
+
+  <form id="swapForm">
+    <input type="text" name="fromItemId" placeholder="Your Item ID" required><br>
+    <input type="text" name="toItemId" placeholder="Target Item ID" required><br>
+    <input type="text" name="toUserId" placeholder="Target User ID" required><br>
+    <button type="submit">Send Swap Request</button>
+  </form>
+
+  <h3>My Swap Requests</h3>
+  <button id="loadSwaps">Load Swaps</button>
+  <div id="swaps"></div>
+</body>
+</html>

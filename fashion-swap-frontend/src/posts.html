@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cultural Posts</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="js/main.js" defer></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav class="navbar">
+  <a href="index.html">Home</a>
+  <a href="posts.html">Cultural Posts</a>
+  <a href="items.html">Items</a>
+  <a href="swaps.html">Swaps</a>
+  <a href="messages.html">Messages</a>
+  <a href="dashboard.html">Dashboard</a>
+</nav>
+
+  <h2>Cultural Posts</h2>
+
+  <form id="postForm" enctype="multipart/form-data">
+    <input type="text" name="title" placeholder="Title" required><br>
+    <textarea name="story" placeholder="Your story" required></textarea><br>
+    <input type="text" name="region" placeholder="Region"><br>
+    <input type="text" name="outfitType" placeholder="Outfit Type"><br>
+    <input type="file" name="photos" multiple><br>
+    <button type="submit">Create Post</button>
+  </form>
+
+  <h3>All Posts</h3>
+  <button id="loadPosts">Load Posts</button>
+  <div id="posts"></div>
+</body>
+</html>
