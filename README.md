@@ -151,23 +151,6 @@ POST /api/messages/send → Send message
 
 GET /api/messages/inbox → User inbox
 
-## 📸 Screenshots
-
-### Login Page
-![Login Screenshot](./screenshots/login.png)
-
-### Dashboard
-![Dashboard Screenshot](./screenshots/dashbooard.png)
-
-### Dashboard
-![Items List Screenshot](./screenshots/itemsList.png)
-
-### Dashboard
-![All Post Screenshot](./screenshots/allPost.png)
-
-### Dashboard
-![Cultural Post Screenshot](./screenshots/culturalPosts.png)
-
 
 📜 License
 
