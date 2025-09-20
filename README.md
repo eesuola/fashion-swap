@@ -46,6 +46,7 @@ Built with **Node.js + Express + Sequelize (PostgreSQL)** on the backend and **H
 ---
 
 ## 📂 Project Structure
+
 fashion_swap/
 │── src/
 │ ├── config/ # Database config
@@ -57,17 +58,20 @@ fashion_swap/
 │
 │── frontend/ # HTML/CSS/JS frontend
 │ ├── login.html
-│ ├── signup.html
+│ ├── signUp.html
 │ ├── dashboard.html
 │ ├── culturalPosts.html
 │ ├── items.html
+│ ├── messages.html
+│ ├── index.html
+│ ├── swaps.html
 │ └── main.js # Axios calls to backend
+│ └── style.css
 │
 │── tests/ # Jest + Supertest files
 │── migrations/ # Sequelize migrations
 │── package.json
 │── README.md
-
 
 ---
 
@@ -93,17 +97,23 @@ DB_PASS=yourpassword
 DB_NAME=fashion_swap
 JWT_SECRET=your_secret_key
 
+
 4️⃣ Run migrations
 npx sequelize-cli db:migrate
+
 
 5️⃣ Start backend server
 npm run dev
 
+
 6️⃣ Start frontend
+
 
 Open frontend/index.html in your browser, or run a simple server:
 
+
 npx serve frontend
+
 
 🧪 Running Tests
 npm test
