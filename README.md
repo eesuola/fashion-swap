@@ -1,167 +1,165 @@
+
 # 👗 Fashion Swap Platform
 
-A full-stack application where users can **swap, sell, or donate fashion items**, share **cultural posts**, comment, and chat with each other.  
-Built with **Node.js + Express + Sequelize (PostgreSQL)** on the backend and **HTML/CSS/JavaScript (with Axios)** on the frontend.
+A full-stack web application for swapping, selling, and donating fashion items.  
+It also allows users to create cultural posts, comment, send messages, and manage swap requests.
 
 ---
 
-## 🚀 Features
-- 🔐 **Authentication & Authorization**
-  - User registration with profile picture (avatar)
-  - Login with JWT-based authentication
-  - Protected routes (only logged-in users can create items, posts, swaps, etc.)
-
-- 👗 **Items**
-  - Add, update, delete fashion items
-  - Status: `available`, `swapped`, `removed`
-  - Upload multiple item photos
-
-- 🔄 **Swap Requests**
-  - Send swap requests from one item to another
-  - Accept / Decline / Complete swaps
-
-- 📝 **Cultural Posts**
-  - Create and view posts about fashion & culture
-  - Comment system for engagement
-
-- 💬 **Messaging**
-  - Send and receive messages between users
-
-- 📊 **Dashboard**
-  - User profile info
-  - User items
-  - Swap requests
-  - Messages
+## ✨ Features
+- 🔐 User Authentication (JWT + bcrypt)
+- 👤 Profile with avatar upload
+- 🛍️ Manage Fashion Items (create, update, delete, list)
+- 🔄 Swap Requests between users
+- 📝 Cultural Posts with comments
+- 💬 Messaging system (inbox & sent)
+- 📊 Admin-only actions (delete posts, manage users)
+- 🖥️ User Dashboard
 
 ---
 
-## 🛠️ Tech Stack
-- **Backend:** Node.js, Express, Sequelize ORM, PostgreSQL
-- **Frontend:** HTML, CSS, JavaScript, Axios (or Vue.js optional)
-- **Auth:** JWT (JSON Web Token) + bcrypt for password hashing
-- **File Uploads:** Multer for handling images
-- **Testing:** Jest + Supertest
-- **Dev Tools:** Nodemon, Vite (for Vue version)
+## 📸 Screenshots
+
+> Screenshots are stored in the `./screenshots/` folder. Replace the sample placeholders with your real app screenshots.
+
+### 🔑 Login Page
+![Login Screenshot](./screenshots/login.png)
+
+### 🏠 Dashboard
+![Dashboard Screenshot](./screenshots/dashboard.png)
+
+### 👗 Cultural Posts
+![Cultural Post Screenshot](./screenshots/posts.png)
 
 ---
 
-## 📂 Project Structure
-
-fashion_swap/
-│── src/
-│ ├── config/ # Database config
-│ ├── controllers/ # Route controllers (auth, items, swaps, etc.)
-│ ├── models/ # Sequelize models
-│ ├── routes/ # API endpoints
-│ ├── middleware/ # Auth middleware (JWT)
-│ └── server.js # Express app entry point
-│
-│── frontend/ # HTML/CSS/JS frontend
-│ ├── login.html
-│ ├── signUp.html
-│ ├── dashboard.html
-│ ├── culturalPosts.html
-│ ├── items.html
-│ ├── messages.html
-│ ├── index.html
-│ ├── swaps.html
-│ └── main.js # Axios calls to backend
-│ └── style.css
-│
-│── tests/ # Jest + Supertest files
-│── migrations/ # Sequelize migrations
-│── package.json
-│── README.md
+## ⚙️ Tech Stack
+- **Backend:** Node.js, Express, Sequelize, PostgreSQL  
+- **Frontend:** HTML, CSS, JavaScript (axios/fetch integration)  
+- **Authentication:** JWT + bcrypt  
+- **File Uploads:** Multer  
+- **Testing:** Jest + Supertest  
 
 ---
 
-## ⚙️ Installation & Setup
+## 🚀 Getting Started
 
-### 1️⃣ Clone repo
+### 🔹 Backend Setup
 ```bash
-git clone https://github.com/yourusername/fashion-swap.git
+# Clone the repo
+git clone https://github.com/username/fashion-swap.git
+
 cd fashion-swap
 
-2️⃣ Install backend dependencies
-cd backend
+# Install dependencies
 npm install
 
-3️⃣ Setup environment variables
+# Setup environment variables
+cp .env.example .env
 
-Create .env file in backend/:
-
-PORT=8000
-DB_HOST=localhost
-DB_USER=postgres
-DB_PASS=yourpassword
-DB_NAME=fashion_swap
-JWT_SECRET=your_secret_key
-
-
-4️⃣ Run migrations
+# Run database migrations
 npx sequelize-cli db:migrate
 
-
-5️⃣ Start backend server
+# Start server
 npm run dev
+````
 
+### 🔹 Frontend Setup
 
-6️⃣ Start frontend
+Since the frontend is plain HTML/CSS/JS:
 
+1. Open `index.html` in your browser
+2. Or run it with VS Code’s **Live Server** extension
+3. Ensure the backend (`http://localhost:8000`) is running
 
-Open frontend/index.html in your browser, or run a simple server:
+---
 
+## 📡 API Routes Overview
 
-npx serve frontend
+### 🔑 Authentication
 
+* `POST /api/auth/register` → Register new user
+* `POST /api/auth/login` → Login user
 
-🧪 Running Tests
+### 🔑 User
+
+* `GET /api/users/:id` → Fetch user by ID
+* `GET /api/users/` → Fetch All User
+* `PUT /api/users/update` → Update User Details
+* `DELETE /api/users/:/` → Delete User
+
+### 👗 Items
+
+* `POST /api/items/create` → Create item
+* `GET /api/items` → Get all items
+* `GET /api/items/:id` → Get item by ID
+* `PUT /api/items/update/:id` → Update item by ID
+* `DELETE /api/items/delete/` → Delete item
+* `DELETE /api/items/:id` → Delete item by ID
+
+### 🔄 Swaps
+
+* `POST /api/swaps/create` → Send swap request
+* `GET /api/swaps/` → Get user’s swaps
+* `PUT /api/swaps/:id/respond` → Get user’s swaps
+* `PUT /api/swaps/:id/complete` → Get user’s swaps
+
+### 📝 Cultural Posts and Comments
+
+* `POST /api/post/create` → Create cultural post
+* `GET /api/post` → List all posts
+* `GET /api/post/:id` → Get post details
+* `PUT /api/post/:id` → Edit post
+* `DELETE /api/post/deleteAll` → Delete All Post
+* `DELETE /api/post/:id` → Delete All Post
+* `POST /api/post/:id/comments` → Add comment to a post
+* `GET /api/post/:id/comments` → Get comment from a post
+* `DELETE /api/post/:id/comments/:commentId` → Delete comment from a post
+
+### 💬 Messages
+
+* `POST /api/messages/send` → Send message
+* `GET /api/messages/inbox` → Get inbox messages
+
+---
+
+## 🧪 Testing
+
+We use **Jest + Supertest**.
+
+Run all tests:
+
+```bash
 npm test
+```
 
-📌 API Routes (Quick Reference)
-Auth
+Example test file:
 
-POST /api/auth/register → Register user
+* `tests/user.test.js` → Auth tests
+* `tests/post.test.js` → Cultural post tests
 
-POST /api/auth/login → Login
+---
 
-GET /api/auth/profile → Get logged-in user
+## 🤝 Contributing
 
-Items
+1. Fork the project
+2. Create your feature branch (`git checkout -b feature/newFeature`)
+3. Commit your changes (`git commit -m 'Add newFeature'`)
+4. Push to the branch (`git push origin feature/newFeature`)
+5. Open a Pull Request
 
-POST /api/items/create → Create new item
+---
 
-GET /api/items → Get all items
+## 📜 License
 
-PUT /api/items/:id → Update item
+This project is licensed under the MIT License.
 
-DELETE /api/items/:id → Delete item
+---
 
-Swap Requests
+## 👨‍💻 Author
 
-POST /api/swaps/create → Create swap request
+Built with ❤️ by [Peter](https://github.com/eesuola)
 
-GET /api/swaps/mine → Get user swaps
+```
 
-PUT /api/swaps/:id/accept → Accept swap
-
-PUT /api/swaps/:id/decline → Decline swap
-
-Cultural Posts
-
-POST /api/post/create → Create post
-
-GET /api/post → List posts
-
-POST /api/post/:id/comment → Add comment
-
-Messages
-
-POST /api/messages/send → Send message
-
-GET /api/messages/inbox → User inbox
-
-
-📜 License
-
-MIT License © 2025 [Peter]
+---
