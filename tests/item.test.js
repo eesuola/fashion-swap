@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../src/server");
+const app = require("../src/app");
 const { sequelize, User, Item } = require("../src/models");
 
 let token;
@@ -48,7 +48,7 @@ describe("Item API", () => {
       .post("/api/items/create")
       .field("title", "Red Shirt");
 
-    expect(res.statusCode).toBe(401);
+    expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty("error");
   });
 

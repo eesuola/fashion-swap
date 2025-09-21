@@ -6,6 +6,7 @@ const rateLimit = require("express-rate-limit");
 
 const authController = require("../controllers/auth.controller");
 
+
 // Setup multer storage
 const storage = multer.diskStorage({
   destination: "uploads/",
@@ -49,5 +50,6 @@ const loginValidationRules = [
 
 router.post("/register", upload.single("avatar"), registerValidationRules, authController.register);
 router.post("/login", loginValidationRules, loginLimiter, authController.login);
+
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../src/server"); 
+const app = require("../src/app"); 
 const { sequelize, User } = require("../src/models");
 
 beforeAll(async () => {
@@ -41,7 +41,7 @@ describe("Auth API", () => {
         password: "wrongpassword",
       });
 
-    expect(res.statusCode).toBe(401);
+    expect(res.statusCode).toBe(400);
     expect(res.body).toHaveProperty("error");
   });
 

@@ -81,12 +81,10 @@ Since the frontend is plain HTML/CSS/JS:
 * `POST /api/auth/register` → Register new user
 * `POST /api/auth/login` → Login user
 
-### 🔑 User
-
-* `GET /api/users/:id` → Fetch user by ID
-* `GET /api/users/` → Fetch All User
-* `PUT /api/users/update` → Update User Details
-* `DELETE /api/users/:/` → Delete User
+* `GET /api/auth/user/:id` → Fetch user by ID
+* `GET /api/auth/user/` → Fetch All User
+* `PUT /api/auth/user/update` → Update User Details
+* `DELETE /api/auth/user/:/` → Delete User
 
 ### 👗 Items
 
@@ -137,6 +135,9 @@ Example test file:
 
 * `tests/user.test.js` → Auth tests
 * `tests/post.test.js` → Cultural post tests
+* `tests/swaps.test.js` → Swaps tests
+* `tests/items.test.js` → Item tests
+* `tests/user.test.js` → User tests
 
 ---
 

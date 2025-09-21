@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../src/server");
+const app = require("../src/app");
 const { sequelize, User, Item, SwapRequest } = require("../src/models");
 
 let userAToken, userBToken, itemAId, itemBId;
@@ -66,8 +66,9 @@ describe("Swap Requests API", () => {
       .send({
         fromItemId: itemBId,
         toItemId: itemAId,
-        toUserId: (await User.findOne({ where: { email: "usera@email.com" } }))
-          .id,
+        toUserId: (
+          await User.findOne({ where: { email: "usera@email.com" } })
+        ).id,
       });
 
     expect(res.statusCode).toBe(201);

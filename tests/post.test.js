@@ -1,6 +1,6 @@
 const request = require("supertest");
-const app = require("../app"); 
-const { sequelize, User } = require("../models");
+const app = require("../src/app");
+const { sequelize, User } = require("../src/models");
 
 let userToken, otherUserToken, postId, commentId;
 
