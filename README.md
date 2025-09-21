@@ -47,7 +47,7 @@ It also allows users to create cultural posts, comment, send messages, and manag
 ### 🔹 Backend Setup
 ```bash
 # Clone the repo
-git clone https://github.com/username/fashion-swap.git
+git clone https://github.com/eesuola/fashion-swap.git
 
 cd fashion-swap
 
@@ -161,5 +161,6 @@ This project is licensed under the MIT License.
 Built with ❤️ by [Peter](https://github.com/eesuola)
 
 ```
+
 
 ---
