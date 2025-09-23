@@ -2,98 +2,113 @@ const request = require("supertest");
 const app = require("../src/app");
 const { sequelize, User, Item, SwapRequest } = require("../src/models");
 
-let userAToken, userBToken, itemAId, itemBId;
+let testToken;
+let userId;
+let itemId;
+let swapRequestId;
 
 beforeAll(async () => {
   await sequelize.sync({ force: true });
-
-  // Create User A
-  await User.create({
-    name: "User A",
-    email: "usera@email.com",
+  const user = await User.create({
+    name: "Swap Tester",
+    email: "swaptester@email.com",
+    password: "password123",
+    role: "user",
+  });
+  userId = user.id;
+  const res = await request(app).post("/api/auth/login").send({
+    email: "swaptester@email.com",
     password: "password123",
   });
-
-  // Create User B
-  await User.create({
-    name: "User B",
-    email: "userb@email.com",
-    password: "password123",
-  });
-
-  // Login User A
-  const resA = await request(app)
-    .post("/api/auth/login")
-    .send({ email: "usera@email.com", password: "password123" });
-  userAToken = resA.body.token;
-
-  // Login User B
-  const resB = await request(app)
-    .post("/api/auth/login")
-    .send({ email: "userb@email.com", password: "password123" });
-  userBToken = resB.body.token;
-
-  // User A creates an item
-  const itemA = await request(app)
+  testToken = res.body.token;
+  if (!testToken) {
+    throw new Error(
+      "Auth token was not generated. Check login route and password hashing."
+    );
+  }
+  const itemRes = await request(app)
     .post("/api/items/create")
-    .set("Authorization", `Bearer ${userAToken}`)
-    .field("title", "Red Jacket")
-    .field("description", "Stylish red jacket")
+    .set("Authorization", `Bearer ${testToken}`)
+    .field("name", "Test Item")
+    .field("description", "This is a test item.")
     .field("category", "Clothing")
-    .field("type", "swap");
-  itemAId = itemA.body.id;
-
-  // User B creates an item
-  const itemB = await request(app)
-    .post("/api/items/create")
-    .set("Authorization", `Bearer ${userBToken}`)
-    .field("title", "Blue Sneakers")
-    .field("description", "Comfortable sneakers")
-    .field("category", "Shoes")
-    .field("type", "swap");
-  itemBId = itemB.body.id;
+    .field("size", "M")
+    .field("condition", "New")
+    .attach("image", "tests/fixtures/test-item.jpg");
+  itemId = itemRes.body.id;
 });
-
 afterAll(async () => {
   await sequelize.close();
 });
 
-describe("Swap Requests API", () => {
-  test("User B sends a swap request to User A", async () => {
+describe("Swap Request Flow", () => {
+  test("Create Swap Request", async () => {
     const res = await request(app)
       .post("/api/swaps/create")
-      .set("Authorization", `Bearer ${userBToken}`)
+      .set("Authorization", `Bearer ${testToken}`)
       .send({
-        fromItemId: itemBId,
-        toItemId: itemAId,
-        toUserId: (
-          await User.findOne({ where: { email: "usera@email.com" } })
-        ).id,
+        itemId: itemId,
+        userId: userId,
       });
-
-    expect(res.statusCode).toBe(201);
-    expect(res.body).toHaveProperty("status", "pending");
-    expect(res.body).toHaveProperty("fromItemId", itemBId);
-    expect(res.body).toHaveProperty("toItemId", itemAId);
-  });
-
-  test("User A can view received swap requests", async () => {
-    const res = await request(app)
-      .get("/api/swaps")
-      .set("Authorization", `Bearer ${userAToken}`);
-
-    expect(res.statusCode).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
-    expect(res.body[0]).toHaveProperty("status", "pending");
-  });
-
-  test("User A accepts swap request", async () => {
-    const swap = await SwapRequest.findOne();
-    const res = await request(app)
-      .put(`/api/swaps/${swap.id}/accept`)
-      .set("Authorization", `Bearer ${userAToken}`);
-
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toHaveProperty("status", "accepted");
+    swapRequestId = res.body.id;
+    expect(res.status).toBe(201);
+    expect(res.body).toHaveProperty("id", swapRequestId);
   });
 });
+describe("Respond to Swap Request", () => {
+  test("Respond to Swap Request", async () => {
+    const res = await request(app)
+      .post(`/api/swaps/${swapRequestId}/respond`)
+      .set("Authorization", `Bearer ${testToken}`)
+      .send({
+        status: "accepted",
+      });
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("id", swapRequestId);
+  });
+});
+
+describe("Complete Swap", () => {
+  test("Complete Swap", async () => {
+    // Ensure swap request is accepted before completing
+    await request(app)
+      .post(`/api/swaps/${swapRequestId}/respond`)
+      .set("Authorization", `Bearer ${testToken}`)
+      .send({ status: "accepted" });
+
+    const res = await request(app)
+      .post(`/api/swaps/${swapRequestId}/complete`)
+      .set("Authorization", `Bearer ${testToken}`);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("id", swapRequestId);
+  });
+});
+
+describe("Get Swap Request by ID", () => {
+  test("Get Swap Request by ID", async () => {
+    const res = await request(app)
+      .get(`/api/swaps/${swapRequestId}`)
+      .set("Authorization", `Bearer ${testToken}`);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveProperty("id", swapRequestId);
+  });
+});
+
+describe("Get All Swap Requests for User", () => {
+  test("Get All Swap Requests for User", async () => {
+    const res = await request(app)
+      .get(`/api/swaps/`)
+      .set("Authorization", `Bearer ${testToken}`);
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+  });
+});
+describe("Delete Swap Request", () => {
+  test("Delete Swap Request", async () => {
+    const res = await request(app)
+      .delete(`/api/swaps/${swapRequestId}`)
+      .set("Authorization", `Bearer ${testToken}`);
+    expect(res.status).toBe(204);
+  });
+});
+

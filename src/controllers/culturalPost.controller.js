@@ -9,13 +9,13 @@ exports.createCulturalPost = async (req, res) => {
     const photos = req.files ? req.files.map((file) => file.filename) : [];
 
     if (!title || !story || !region || !outfitType || !photos) {
-      return res.status(404).json({ error: "All field are required" });
+      return res.status(400).json({ error: "Missing required fields" });
     }
     const existingPost = await CulturalPost.findOne({
       where: { title, story, outfitType },
     });
     if (existingPost)
-      return res.status(404).json({ error: "Post already exist" });
+      return res.status(409).json({ error: "Post already exist" });
 
     if (!["user", "admin"].includes(req.user.role)) {
       return res
@@ -32,9 +32,20 @@ exports.createCulturalPost = async (req, res) => {
       userId: req.user.id,
       photos,
     });
-    res.json({
+    res.status(201).json({
+      id: culturalPost.id, // <-- add this
       message: "Cultural Post created successfully",
-      user: { id: culturalPost.id, story: culturalPost.story },
+      post: {
+        title: culturalPost.title,
+        story: culturalPost.story,
+        region: culturalPost.region,
+        outfitType: culturalPost.outfitType,
+        likesCount: culturalPost.likesCount,
+        userId: culturalPost.userId,
+        photos: culturalPost.photos,
+        createdAt: culturalPost.createdAt,
+        updatedAt: culturalPost.updatedAt,
+      },
     });
   } catch (error) {
     console.error("Register error:", error);
@@ -122,7 +133,7 @@ exports.updateCulturalPost = async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    if (post.userId !== req.user.id) {
+    if (req.user.role !== "admin" && post.userId !== req.user.id) {
       return res.status(403).json({ error: "Not allowed to update this post" });
     }
     let photos = post.photos; // keep existing if none uploaded
@@ -178,11 +189,11 @@ exports.deleteCulturalPost = async (req, res) => {
 exports.addCommentToPost = async (req, res) => {
   try {
     const postId = req.params.id;
-    const { userId, text } = req.body;
+    const {  text } = req.body;
 
     // Validate input
-    if (!userId || !text) {
-      return res.status(400).json({ error: "User ID and text are required" });
+    if (!text) {
+      return res.status(400).json({ error: "Text is required" });
     }
 
     // Find the post
@@ -211,13 +222,14 @@ exports.addCommentToPost = async (req, res) => {
     }
 
     // Create the comment
+    const userId = req.user.id;
     const comment = await Comment.create({
       userId,
       postId,
       text,
     });
 
-    res.status(201).json(comment);
+    res.status(201).json({ id: comment.id, text: comment.text, userId: comment.userId });
   } catch (error) {
     console.error("Failed to add comment", error);
     res.status(500).json({ message: "Server error" });
@@ -257,7 +269,7 @@ exports.deleteComment = async (req, res) => {
         .status(403)
         .json({ error: "Not allowed to delete this comment" });
     }
-    const deleted = await Comment.destroy({ where: {} });
+    await comment.destroy();
     res.json({ message: "Comment deleted successfully" });
   } catch (error) {
     console.error("Failed to delete comment", error);
