@@ -9,7 +9,7 @@
   "scripts": {
     "test": "set NODE_ENV=test && jest",
     "start": "node server.js",
-    "dev": "nodemon app.js",
+    "dev": "nodemon app.js"
 
   },
   "dependencies": {
