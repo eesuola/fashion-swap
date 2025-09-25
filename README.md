@@ -1,167 +1,297 @@
-
 # 👗 Fashion Swap Platform
 
-A full-stack web application for swapping, selling, and donating fashion items.  
-It also allows users to create cultural posts, comment, send messages, and manage swap requests.
+A full-stack web application for swapping, selling, and donating fashion items. Users can create cultural posts, comment, send messages, and manage swap requests in a community-driven fashion marketplace.
+
+> **🚀 Live Demo**: [https://fashion-swap-production.up.railway.app](https://fashion-swap-production.up.railway.app)
 
 ---
 
-## ✨ Features
-- 🔐 User Authentication (JWT + bcrypt)
-- 👤 Profile with avatar upload
-- 🛍️ Manage Fashion Items (create, update, delete, list)
-- 🔄 Swap Requests between users
-- 📝 Cultural Posts with comments
-- 💬 Messaging system (inbox & sent)
-- 📊 Admin-only actions (delete posts, manage users)
-- 🖥️ User Dashboard
+## 🧪 **Try the API Instantly**
 
----
+### **Interactive Testing**
+**📋 Postman Collection**: [Test All Endpoints](https://peter-5800517.postman.co/workspace/Peter's-Workspace~2df473a8-e544-43d1-8068-98f3f60c92d7/collection/43612780-f1be958b-e393-4fcd-85cd-b9533fa7ae6c?action=share&creator=43612780&active-environment=43612780-5c8e54c2-8ce3-495b-b79e-31c1fd7c180f)
 
-## 📸 Screenshots
+**How to Test:**
+1. Click the Postman link above
+2. Fork/Import the collection 
+3. Test the complete user journey:
+   - 👤 Register → Login → Get auth token
+   - 👗 Create fashion items
+   - 🔄 Send swap requests  
+   - 📝 Create cultural posts
+   - 💬 Send messages
 
-> Screenshots are stored in the `./screenshots/` folder. Replace the sample placeholders with your real app screenshots.
-
-### 🔑 Login Page
-![Login Screenshot](./screenshots/login.png)
-
-### 🏠 Dashboard
-![Dashboard Screenshot](./screenshots/dashboard.png)
-
-### 👗 Cultural Posts
-![Cultural Post Screenshot](./screenshots/posts.png)
-
----
-
-## ⚙️ Tech Stack
-- **Backend:** Node.js, Express, Sequelize, PostgreSQL  
-- **Frontend:** HTML, CSS, JavaScript (axios/fetch integration)  
-- **Authentication:** JWT + bcrypt  
-- **File Uploads:** Multer  
-- **Testing:** Jest + Supertest  
-
----
-
-## 🚀 Getting Started
-
-### 🔹 Backend Setup
+### **Quick API Verification**
 ```bash
-# Clone the repo
-git clone https://github.com/eesuola/fashion-swap.git
+# Test if API is running
+curl https://fashion-swap-production.up.railway.app/api/items
 
+# Register a test user
+curl -X POST https://fashion-swap-production.up.railway.app/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username":"testuser","email":"test@example.com","password":"password123"}'
+
+# Login and get auth token
+curl -X POST https://fashion-swap-production.up.railway.app/api/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email":"test@example.com","password":"password123"}'
+```
+
+---
+
+## ✨ **Features**
+
+### **Core Functionality**
+- 🔐 **JWT Authentication** - Secure user registration and login
+- 👤 **User Profiles** - Avatar upload and profile management
+- 🛍️ **Fashion Item Management** - CRUD operations for clothing items
+- 🔄 **Smart Swap System** - Request, approve, and complete item swaps
+- 📝 **Cultural Posts** - Community content with comments system
+- 💬 **Messaging System** - Direct communication between users
+- 📊 **Admin Controls** - Content moderation and user management
+
+### **Technical Highlights**
+- RESTful API architecture
+- PostgreSQL database with Sequelize ORM
+- JWT-based authentication
+- File upload handling with Multer
+- Comprehensive error handling
+- Input validation and sanitization
+
+---
+
+## 🏗️ **Architecture & Design**
+
+### **Project Structure**
+```
+fashion-swap/
+├── src/
+│   ├── controllers/     # Request handlers & business logic
+│   ├── models/         # Database models (Sequelize)
+│   ├── routes/         # API route definitions
+│   ├── middlewares/    # Authentication, validation, error handling
+│   ├── app.js          # Express app configuration
+│   └── server.js       # Server startup and port listening
+├── config/             # Database and app configuration
+├── migrations/         # Database schema changes
+├── tests/             # Jest test suites
+├── uploads/           # File upload storage
+├── screenshots/       # Application screenshots
+├── seeders/          # Database seed data
+└── fashion-swap-frontend/  # Frontend HTML/CSS/JS files
+```
+
+### **Database Schema**
+- **Users** - Authentication and profile data
+- **Items** - Fashion item catalog
+- **Swaps** - Swap request management
+- **Posts** - Cultural content system
+- **Messages** - User communication
+- **Comments** - Post interactions
+
+### **API Design Principles**
+- **RESTful endpoints** with clear HTTP methods
+- **Consistent JSON responses** with proper status codes
+- **JWT authorization** for protected routes
+- **Input validation** on all endpoints
+- **Error handling** with descriptive messages
+
+---
+
+## ⚙️ **Technology Stack**
+
+### **Backend**
+- **Node.js** - Runtime environment
+- **Express.js** - Web application framework
+- **PostgreSQL** - Primary database
+- **Sequelize** - ORM and database migrations
+- **JWT** - Authentication tokens
+- **bcrypt** - Password hashing
+- **Multer** - File upload handling
+
+### **Frontend** 
+- **HTML5/CSS3** - Structure and styling
+- **Vanilla JavaScript** - Client-side logic
+- **Axios** - HTTP client for API calls
+
+### **DevOps & Deployment**
+- **Railway** - Cloud hosting platform
+- **GitHub** - Version control and CI/CD
+- **Jest + Supertest** - Testing framework
+- **Postman** - API documentation and testing
+
+---
+
+## 📡 **API Documentation**
+
+### **🔑 Authentication Endpoints**
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/api/auth/register` | Register new user | ❌ |
+| POST | `/api/auth/login` | User login | ❌ |
+| GET | `/api/auth/user/:id` | Get user by ID | ✅ |
+| PUT | `/api/auth/user/update` | Update user profile | ✅ |
+| DELETE | `/api/auth/user/:id` | Delete user account | ✅ |
+
+### **👗 Fashion Items**
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/api/items/create` | Create new item | ✅ |
+| GET | `/api/items` | Get all items | ❌ |
+| GET | `/api/items/:id` | Get item by ID | ❌ |
+| PUT | `/api/items/update/:id` | Update item | ✅ |
+| DELETE | `/api/items/:id` | Delete item | ✅ |
+
+### **🔄 Swap Management**
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/api/swaps/create` | Send swap request | ✅ |
+| GET | `/api/swaps` | Get user's swaps | ✅ |
+| PUT | `/api/swaps/:id/respond` | Accept/decline swap | ✅ |
+| PUT | `/api/swaps/:id/complete` | Mark swap complete | ✅ |
+
+### **📝 Cultural Posts**
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/api/post/create` | Create new post | ✅ |
+| GET | `/api/post` | Get all posts | ❌ |
+| GET | `/api/post/:id` | Get post details | ❌ |
+| PUT | `/api/post/:id` | Update post | ✅ |
+| DELETE | `/api/post/:id` | Delete post | ✅ |
+
+### **💬 Comments & Messages**
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---------------|
+| POST | `/api/post/:id/comments` | Add comment | ✅ |
+| GET | `/api/post/:id/comments` | Get post comments | ❌ |
+| DELETE | `/api/post/:id/comments/:commentId` | Delete comment | ✅ |
+| POST | `/api/messages/send` | Send message | ✅ |
+| GET | `/api/messages/inbox` | Get inbox messages | ✅ |
+
+---
+
+## 🚀 **Local Development Setup**
+
+### **Prerequisites**
+- Node.js (v16 or higher)
+- PostgreSQL (v12 or higher)
+- Git
+
+### **Installation**
+```bash
+# Clone the repository
+git clone https://github.com/eesuola/fashion-swap.git
 cd fashion-swap
 
 # Install dependencies
 npm install
 
-# Setup environment variables
+# Set up environment variables
 cp .env.example .env
+# Edit .env with your database credentials
 
 # Run database migrations
 npx sequelize-cli db:migrate
 
-# Start server
+# Start development server
 npm run dev
-````
+```
 
-### 🔹 Frontend Setup
+### **Environment Variables**
+```env
+# Database
+DB_HOST=localhost
+DB_USERNAME=your_username
+DB_PASSWORD=your_password
+DB_DATABASE=fashion_swap_dev
 
-Since the frontend is plain HTML/CSS/JS:
+# Authentication
+JWT_SECRET=your_jwt_secret_key
 
-1. Open `index.html` in your browser
-2. Or run it with VS Code’s **Live Server** extension
-3. Ensure the backend (`http://localhost:8000`) is running
-
----
-
-## 📡 API Routes Overview
-
-### 🔑 Authentication
-
-* `POST /api/auth/register` → Register new user
-* `POST /api/auth/login` → Login user
-
-* `GET /api/auth/user/:id` → Fetch user by ID
-* `GET /api/auth/user/` → Fetch All User
-* `PUT /api/auth/user/update` → Update User Details
-* `DELETE /api/auth/user/:/` → Delete User
-
-### 👗 Items
-
-* `POST /api/items/create` → Create item
-* `GET /api/items` → Get all items
-* `GET /api/items/:id` → Get item by ID
-* `PUT /api/items/update/:id` → Update item by ID
-* `DELETE /api/items/delete/` → Delete item
-* `DELETE /api/items/:id` → Delete item by ID
-
-### 🔄 Swaps
-
-* `POST /api/swaps/create` → Send swap request
-* `GET /api/swaps/` → Get user’s swaps
-* `PUT /api/swaps/:id/respond` → Get user’s swaps
-* `PUT /api/swaps/:id/complete` → Get user’s swaps
-
-### 📝 Cultural Posts and Comments
-
-* `POST /api/post/create` → Create cultural post
-* `GET /api/post` → List all posts
-* `GET /api/post/:id` → Get post details
-* `PUT /api/post/:id` → Edit post
-* `DELETE /api/post/deleteAll` → Delete All Post
-* `DELETE /api/post/:id` → Delete All Post
-* `POST /api/post/:id/comments` → Add comment to a post
-* `GET /api/post/:id/comments` → Get comment from a post
-* `DELETE /api/post/:id/comments/:commentId` → Delete comment from a post
-
-### 💬 Messages
-
-* `POST /api/messages/send` → Send message
-* `GET /api/messages/inbox` → Get inbox messages
+# Server
+PORT=8000
+NODE_ENV=development
+```
 
 ---
 
-## 🧪 Testing
+## 🧪 **Testing**
 
-We use **Jest + Supertest**.
-
-Run all tests:
-
+### **Run Tests**
 ```bash
+# Run all tests
 npm test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run specific test file
+npm test -- user.test.js
 ```
 
-Example test file:
-
-* `tests/user.test.js` → Auth tests
-* `tests/post.test.js` → Cultural post tests
-* `tests/swaps.test.js` → Swaps tests
-* `tests/items.test.js` → Item tests
-* `tests/user.test.js` → User tests
-
----
-
-## 🤝 Contributing
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/newFeature`)
-3. Commit your changes (`git commit -m 'Add newFeature'`)
-4. Push to the branch (`git push origin feature/newFeature`)
-5. Open a Pull Request
+### **Test Structure**
+- `tests/auth.test.js` - Authentication endpoints
+- `tests/items.test.js` - Fashion item CRUD
+- `tests/swaps.test.js` - Swap request flow
+- `tests/posts.test.js` - Cultural posts
+- `tests/messages.test.js` - Messaging system
 
 ---
 
-## 📜 License
+## 🚢 **Deployment**
 
-This project is licensed under the MIT License.
+This application is deployed on Railway with:
+- **Automatic deployments** from the main branch
+- **PostgreSQL database** with SSL
+- **Environment variable** management
+- **Custom domain** support
+
+### **Production URL**
+**https://fashion-swap-production.up.railway.app**
+
+---
+
+## 📈 **Future Enhancements**
+
+- [ ] Real-time messaging with WebSockets
+- [ ] Image optimization and CDN integration
+- [ ] Advanced search and filtering
+- [ ] Email notifications for swaps
+- [ ] Mobile app development
+- [ ] Payment integration for premium features
+- [ ] AI-powered item recommendations
 
 ---
 
-## 👨‍💻 Author
+## 🤝 **Contributing**
 
-Built with ❤️ by [Peter](https://github.com/eesuola)
-
-```
-
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
 
 ---
+
+## 📝 **License**
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 👨‍💻 **Author**
+
+**Peter Eesuola**
+- GitHub: [@eesuola](https://github.com/eesuola)
+
+
+## 🙏 **Acknowledgments**
+
+- Built with modern Node.js and Express.js
+- Database powered by PostgreSQL
+- Deployed on Railway platform
+- Tested with Jest and Supertest
+
+---
+
+*Built with ❤️ for sustainable fashion and community sharing*
