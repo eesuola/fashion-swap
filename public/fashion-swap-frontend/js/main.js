@@ -1,4 +1,4 @@
-const API_BASE = "https://fashion-swap-production.up.railway.app/api"; 
+const API_BASE = "https://fashion-swap-production.up.railway.app";
 
 // Save and get JWT
 function saveToken(token) {
@@ -15,7 +15,7 @@ if (signupForm) {
     e.preventDefault();
     const formData = new FormData(signupForm);
     try {
-      const res = await axios.post(`${API_BASE}/auth/register`, formData, {
+      const res = await axios.post(`${API_BASE}/api/auth/register`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       document.getElementById("signupMsg").innerText = " Registered!";
@@ -37,7 +37,7 @@ if (loginForm) {
       password: loginForm.password.value,
     };
     try {
-      const res = await axios.post(`${API_BASE}/auth/login`, data);
+      const res = await axios.post(`${API_BASE}/api/auth/login`, data);
       saveToken(res.data.token);
       localStorage.setItem("user", JSON.stringify(res.data.user));
 
@@ -57,7 +57,7 @@ if (postForm) {
     e.preventDefault();
     const formData = new FormData(postForm);
     try {
-      const res = await axios.post(`${API_BASE}/post/create`, formData, {
+      const res = await axios.post(`${API_BASE}/api/post/create`, formData, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
           "Content-Type": "multipart/form-data",
@@ -76,7 +76,7 @@ const loadPostsBtn = document.getElementById("loadPosts");
 if (loadPostsBtn) {
   loadPostsBtn.addEventListener("click", async () => {
     try {
-      const res = await axios.get(`${API_BASE}/post`, {
+      const res = await axios.get(`${API_BASE}/api/post`, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
       const postsDiv = document.getElementById("posts");
@@ -108,7 +108,7 @@ if (itemForm) {
     e.preventDefault();
     const formData = new FormData(itemForm);
     try {
-      const res = await axios.post(`${API_BASE}/items/create`, formData, {
+      const res = await axios.post(`${API_BASE}/api/items/create`, formData, {
         headers: {
           Authorization: `Bearer ${getToken()}`,
           "Content-Type": "multipart/form-data",
@@ -126,7 +126,7 @@ const loadItemsBtn = document.getElementById("loadItems");
 if (loadItemsBtn) {
   loadItemsBtn.addEventListener("click", async () => {
     try {
-      const res = await axios.get(`${API_BASE}/items/`, {
+      const res = await axios.get(`${API_BASE}/api/items/`, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
       document.getElementById("items").innerHTML = res.data
@@ -164,7 +164,7 @@ if (swapForm) {
       toUserId: swapForm.toUserId.value,
     };
     try {
-      await axios.post(`${API_BASE}/swaps/create`, data, {
+      await axios.post(`${API_BASE}/api/swaps/create`, data, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
       alert(" Swap request sent!");
@@ -179,7 +179,7 @@ const loadSwapsBtn = document.getElementById("loadSwaps");
 if (loadSwapsBtn) {
   loadSwapsBtn.addEventListener("click", async () => {
     try {
-      const res = await axios.get(`${API_BASE}/swaps`, {
+      const res = await axios.get(`${API_BASE}/api/swaps`, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
       document.getElementById("swaps").innerHTML = res.data
@@ -208,7 +208,7 @@ if (messageForm) {
       content: messageForm.content.value,
     };
     try {
-      await axios.post(`${API_BASE}/messages/send`, data, {
+      await axios.post(`${API_BASE}/api/messages/send`, data, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
       alert(" Message sent!");
@@ -223,7 +223,7 @@ const loadMessagesBtn = document.getElementById("loadMessages");
 if (loadMessagesBtn) {
   loadMessagesBtn.addEventListener("click", async () => {
     try {
-      const res = await axios.get(`${API_BASE}/messages/inbox`, {
+      const res = await axios.get(`${API_BASE}/api/messages/inbox`, {
         headers: { Authorization: `Bearer ${getToken()}` },
       });
       document.getElementById("messages").innerHTML = res.data
