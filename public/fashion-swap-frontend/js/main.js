@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:8000/api"; // adjust if needed
+const API_BASE = "https://fashion-swap-production.up.railway.app/api"; 
 
 // Save and get JWT
 function saveToken(token) {
