@@ -16,9 +16,9 @@ exports.register = async (req, res) => {
   }
 
   try {
-    const { name, email, password, location, role } = req.body;
+    const { name, email, password, location } = req.body;
     const avatarPath = req.file ? req.file.path : null;
-    if (!name || !email || !password || !location)
+    if (!name || !email || !password || !location || avatarPath)
       return res.status(404).json({ error: "All field are required" });
 
     const existing = await User.findOne({ where: { email } });
@@ -34,7 +34,6 @@ exports.register = async (req, res) => {
       password: hashedPassword,
       avatar: avatarPath,
       location,
-      role,
     });
 
     res.json({
