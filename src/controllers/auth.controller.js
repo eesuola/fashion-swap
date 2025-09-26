@@ -3,10 +3,14 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
 require("dotenv").config();
+const logger = require("../logger");
+const config = require("../config/config");
 
 exports.register = async (req, res) => {
+  logger.debug("User registration initiated");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    logger.warn("User registration validation failed", { errors: errors.array() });
     return res.status(400).json({ errors: errors.array() });
   }
 
@@ -43,8 +47,10 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  logger.debug("User login initiated");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    logger.warn("User login validation failed", { errors: errors.array() });
     return res.status(400).json({ errors: errors.array() });
   }
   try {
@@ -109,6 +115,7 @@ exports.refreshToken = (req, res) => {
 };
 
 exports.forgotPassword = async (req, res) => {
+  logger.debug("Password reset requested");
   const { email } = req.body;
   if (!email) return res.status(400).json({ error: "Email is required" });
 

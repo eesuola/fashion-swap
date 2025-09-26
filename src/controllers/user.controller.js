@@ -1,8 +1,13 @@
 const { User } = require("../models");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+const logger = require("../logger");
+const config = require("../config/config");
 
 exports.getUserProfiles = async (req, res) => {
+  logger.debug("Fetching all user profiles");
+  logger.info("Log metadata enabled:", config.logMetadata);
+
   try {
     const users = await User.findAll({
       attributes: [
@@ -22,6 +27,9 @@ exports.getUserProfiles = async (req, res) => {
   }
 };
 exports.getUserProfileById = async (req, res) => {
+  logger.debug("Fetching user profile by ID");
+  logger.info("Log metadata enabled:", config.logMetadata);
+
   try {
     const userId = req.params.id;
     const user = await User.findByPk(userId, {
@@ -38,6 +46,9 @@ exports.getUserProfileById = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
+  logger.debug("Updating user profile");
+  logger.info("Log metadata enabled:", config.logMetadata);
+
   try {
     const  userId  = req.user.id;
     const { name, email } = req.body;
@@ -59,6 +70,8 @@ exports.updateUser = async (req, res) => {
   }
 };
 exports.deleteUser = async (req, res) => {
+  logger.debug("Deleting user profile");
+  logger.info("Log metadata enabled:", config.logMetadata);
   try {
     const { id } = req.params;
     const deleted = await User.destroy({ where: { id } });
