@@ -8,6 +8,7 @@ const config = require("../config/config");
 
 exports.register = async (req, res) => {
   logger.debug("User registration initiated");
+  logger.info("Log metadata enabled:", config.logMetadata);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     logger.warn("User registration validation failed", { errors: errors.array() });

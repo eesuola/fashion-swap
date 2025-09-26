@@ -23,6 +23,7 @@ exports.getUserProfiles = async (req, res) => {
     res.json(users);
   } catch (error) {
     console.error("Error fetching user profiles:", error);
+    logger.error("Error fetching user profiles:", error);
     res.status(500).json({ error: "Failed to fetch user profiles" });
   }
 };
@@ -36,11 +37,13 @@ exports.getUserProfileById = async (req, res) => {
       attributes: ["id", "name", "email"],
     });
     if (!user) {
+      logger.warn("User not found");
       return res.status(404).json({ error: "User not found" });
     }
     res.json(user);
   } catch (error) {
     console.error("Error fetching user:", error);
+    logger.error("Error fetching user:", error);
     res.status(500).json({ error: "Failed to fetch user" });
   }
 };
@@ -66,6 +69,7 @@ exports.updateUser = async (req, res) => {
     res.json(updatedUser);
   } catch (error) {
     console.error("Error updating user:", error);
+    logger.error("Error updating user:", error);
     res.status(500).json({ error: "Failed to update user" });
   }
 };
@@ -79,6 +83,7 @@ exports.deleteUser = async (req, res) => {
     res.json({ message: "User deleted successfully" });
   } catch (error) {
     console.error("Error deleting user:", error);
+    logger.error("Error deleting user:", error);
     res.status(500).json({ error: "Failed to delete user" });
   }
 };
