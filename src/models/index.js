@@ -1,6 +1,7 @@
 const { Sequelize } = require("sequelize");
-const dbConfig = require("../config/config.js")[process.env.NODE_ENV || "development"];
-
+const dbConfig = require("../../config/config.js")[
+  process.env.NODE_ENV || "development"
+];
 
 const sequelize = new Sequelize(
   dbConfig.database,
@@ -14,11 +15,17 @@ const sequelize = new Sequelize(
   }
 );
 
-// Import models 
+// Import models
 const User = require("./user.model")(sequelize, Sequelize.DataTypes);
 const Item = require("./item.model")(sequelize, Sequelize.DataTypes);
-const SwapRequest = require("./swapRequest.model")(sequelize, Sequelize.DataTypes);
-const CulturalPost = require("./culturalPost.model")(sequelize, Sequelize.DataTypes);
+const SwapRequest = require("./swapRequest.model")(
+  sequelize,
+  Sequelize.DataTypes
+);
+const CulturalPost = require("./culturalPost.model")(
+  sequelize,
+  Sequelize.DataTypes
+);
 const Comment = require("./comment.model")(sequelize, Sequelize.DataTypes);
 const Message = require("./message.model")(sequelize, Sequelize.DataTypes);
 
