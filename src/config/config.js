@@ -18,12 +18,12 @@ module.exports = {
     dialect: process.env.TEST_DB_DIALECT || "postgres",
   },
   production: {
-    use_env_variable: "DATABASE_URL", 
+    use_env_variable: "DATABASE_URL", // Railway injects this automatically
     dialect: "postgres",
     dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false, 
+        rejectUnauthorized: false, // needed for Railway
       },
     },
   },

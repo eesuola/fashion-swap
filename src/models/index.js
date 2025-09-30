@@ -1,20 +1,7 @@
-const { Sequelize } = require("sequelize");
-const dbConfig = require("../../config/config.js")[process.env.NODE_ENV || "development"];
+// src/models/index.js
+const sequelize = require("../config/db");
 
-let sequelize;
-
-if (dbConfig.use_env_variable) {
-  sequelize = new Sequelize(process.env[dbConfig.use_env_variable], dbConfig);
-} else {
-  sequelize = new Sequelize(
-    dbConfig.database,
-    dbConfig.username,
-    dbConfig.password,
-    dbConfig
-  );
-}
-
-// Import models
+// Import models (all are already Sequelize instances)
 const User = require("./user.model");
 const Item = require("./item.model");
 const SwapRequest = require("./swapRequest.model");
@@ -34,7 +21,7 @@ User.hasMany(SwapRequest, { foreignKey: "toUserId", as: "receivedRequests" });
 SwapRequest.belongsTo(User, { as: "fromUser", foreignKey: "fromUserId" });
 SwapRequest.belongsTo(User, { as: "toUser", foreignKey: "toUserId" });
 
-// SwapRequest ↔ Item
+// SwapRequest ↔ Item (dual items)
 SwapRequest.belongsTo(Item, { as: "fromItem", foreignKey: "fromItemId" });
 SwapRequest.belongsTo(Item, { as: "toItem", foreignKey: "toItemId" });
 
@@ -59,7 +46,6 @@ Message.belongsTo(User, { as: "toUser", foreignKey: "toUserId" });
 // ---------------- Exports ----------------
 module.exports = {
   sequelize,
-  Sequelize,
   User,
   Item,
   SwapRequest,
