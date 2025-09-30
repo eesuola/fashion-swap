@@ -1,10 +1,28 @@
-const sequelize = require("../config/db");
-const User = require("./user.model");
-const Item = require("./item.model");
-const SwapRequest = require("./swapRequest.model");
-const CulturalPost = require("./culturalPost.model");
-const Comment = require("./comment.model");
-const Message = require("./message.model");
+const { Sequelize } = require("sequelize");
+const dbConfig = require("../config/config.js")[process.env.NODE_ENV || "development"];
+
+
+const sequelize = new Sequelize(
+  dbConfig.database,
+  dbConfig.username,
+  dbConfig.password,
+  {
+    host: dbConfig.host,
+    port: dbConfig.port,
+    dialect: dbConfig.dialect,
+    logging: false,
+  }
+);
+
+// Import models 
+const User = require("./user.model")(sequelize, Sequelize.DataTypes);
+const Item = require("./item.model")(sequelize, Sequelize.DataTypes);
+const SwapRequest = require("./swapRequest.model")(sequelize, Sequelize.DataTypes);
+const CulturalPost = require("./culturalPost.model")(sequelize, Sequelize.DataTypes);
+const Comment = require("./comment.model")(sequelize, Sequelize.DataTypes);
+const Message = require("./message.model")(sequelize, Sequelize.DataTypes);
+
+// ---------------- Associations ----------------
 
 // User ↔ Item
 User.hasMany(Item, { foreignKey: "ownerId", as: "items" });
@@ -38,8 +56,10 @@ User.hasMany(Message, { foreignKey: "toUserId", as: "receivedMessages" });
 Message.belongsTo(User, { as: "fromUser", foreignKey: "fromUserId" });
 Message.belongsTo(User, { as: "toUser", foreignKey: "toUserId" });
 
+// ---------------- Exports ----------------
 module.exports = {
   sequelize,
+  Sequelize,
   User,
   Item,
   SwapRequest,

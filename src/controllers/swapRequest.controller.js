@@ -1,8 +1,7 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 const { Op } = require("sequelize");
 const logger = require("../logger");
-const config = require("../config/config");
+
 
 const { SwapRequest, Item, User } = require("../models");
 

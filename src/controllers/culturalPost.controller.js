@@ -1,9 +1,8 @@
 const { CulturalPost, User, Comment } = require("../models");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 const path = require("path");
 const logger = require("../logger");
-const config = require("../config/config");
+
 
 exports.createCulturalPost = async (req, res) => {
   logger.debug("Creating cultural post");

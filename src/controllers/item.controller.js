@@ -1,8 +1,7 @@
 const { Item, User } = require("../models");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 const logger = require("../logger");
-const config = require("../config/config");
+
 
 exports.createItem = async (req, res) => {
   logger.debug("Creating new item");

@@ -1,8 +1,7 @@
 const { User } = require("../models");
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 const logger = require("../logger");
-const config = require("../config/config");
+
 
 exports.getUserProfiles = async (req, res) => {
   logger.debug("Fetching all user profiles");

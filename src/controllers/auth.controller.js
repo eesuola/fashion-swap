@@ -1,10 +1,8 @@
 const { User } = require("../models");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
 const { validationResult } = require("express-validator");
-require("dotenv").config();
 const logger = require("../logger");
-const config = require("../config/config");
+
 
 exports.register = async (req, res) => {
   logger.debug("User registration initiated");
@@ -25,13 +23,11 @@ exports.register = async (req, res) => {
     if (existing) {
       return res.status(400).json({ message: "Account already exists" });
     }
-    // hash password
-    const hashedPassword = await bcrypt.hash(password.toString(), 10);
 
     const user = await User.create({
       name,
       email,
-      password: hashedPassword,
+      password,
       avatar: avatarPath,
       location,
     });
