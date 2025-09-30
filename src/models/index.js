@@ -1,33 +1,26 @@
 const { Sequelize } = require("sequelize");
-const dbConfig = require("../../config/config.js")[
-  process.env.NODE_ENV || "development"
-];
+const dbConfig = require("../config/config.js")[process.env.NODE_ENV || "development"];
 
-const sequelize = new Sequelize(
-  dbConfig.database,
-  dbConfig.username,
-  dbConfig.password,
-  {
-    host: dbConfig.host,
-    port: dbConfig.port,
-    dialect: dbConfig.dialect,
-    logging: false,
-  }
-);
+let sequelize;
+
+if (dbConfig.use_env_variable) {
+  sequelize = new Sequelize(process.env[dbConfig.use_env_variable], dbConfig);
+} else {
+  sequelize = new Sequelize(
+    dbConfig.database,
+    dbConfig.username,
+    dbConfig.password,
+    dbConfig
+  );
+}
 
 // Import models
-const User = require("./user.model")(sequelize, Sequelize.DataTypes);
-const Item = require("./item.model")(sequelize, Sequelize.DataTypes);
-const SwapRequest = require("./swapRequest.model")(
-  sequelize,
-  Sequelize.DataTypes
-);
-const CulturalPost = require("./culturalPost.model")(
-  sequelize,
-  Sequelize.DataTypes
-);
-const Comment = require("./comment.model")(sequelize, Sequelize.DataTypes);
-const Message = require("./message.model")(sequelize, Sequelize.DataTypes);
+const User = require("./user.model");
+const Item = require("./item.model");
+const SwapRequest = require("./swapRequest.model");
+const CulturalPost = require("./culturalPost.model");
+const Comment = require("./comment.model");
+const Message = require("./message.model");
 
 // ---------------- Associations ----------------
 
@@ -41,7 +34,7 @@ User.hasMany(SwapRequest, { foreignKey: "toUserId", as: "receivedRequests" });
 SwapRequest.belongsTo(User, { as: "fromUser", foreignKey: "fromUserId" });
 SwapRequest.belongsTo(User, { as: "toUser", foreignKey: "toUserId" });
 
-// SwapRequest ↔ Item (dual items)
+// SwapRequest ↔ Item
 SwapRequest.belongsTo(Item, { as: "fromItem", foreignKey: "fromItemId" });
 SwapRequest.belongsTo(Item, { as: "toItem", foreignKey: "toItemId" });
 
