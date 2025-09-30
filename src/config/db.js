@@ -1,16 +1,18 @@
 const { Sequelize } = require("sequelize");
-const isTest = process.env.NODE_ENV === "test";
-require("dotenv").config();
+const config = require("../../config/config.js");
+const env = process.env.NODE_ENV || "development";
 
-const sequelize = new Sequelize(process.env.DATABASE_URL || `postgresql://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:5432/${process.env.DB_DATABASE}`, {
-  dialect: 'postgres',
-  dialectOptions: {
-    ssl: process.env.NODE_ENV === 'production' ? {
-      require: true,
-      rejectUnauthorized: false
-    } : false
-  },
-  logging: process.env.NODE_ENV === 'production' ? false : console.log
-});
+let sequelize;
+
+if (config[env].use_env_variable) {
+  sequelize = new Sequelize(process.env[config[env].use_env_variable], config[env]);
+} else {
+  sequelize = new Sequelize(
+    config[env].database,
+    config[env].username,
+    config[env].password,
+    config[env]
+  );
+}
 
 module.exports = sequelize;
