@@ -1,6 +1,7 @@
 const winston = require("winston");
 const path = require("path");
-const config = require("../config/config");
+const config = require("../../config/config");
+
 
 const logLevels = {
   error: 0,
