@@ -11,7 +11,7 @@ const swapRequestRoutes = require("./routes/swapRequest.routes");
 
 dotenv.config();
 
-const app = express(); 
+const app = express();
 
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 });
 
 // Fallback for frontend routing
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
   if (!req.path.startsWith("/api/")) {
     res.sendFile(path.join(__dirname, "../public/index.html"));
   }
